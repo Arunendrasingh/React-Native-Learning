@@ -4,6 +4,8 @@ import React from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FlatCard from "./components/FlatCard";
 import ElevatedCard from "./components/ElevatedCard";
+import BlogCard from "./components/BlogCard";
+import Card from "./components/Card";
 
 
 
@@ -39,7 +41,11 @@ function App() {
 
 
         {/* Card View */}
-        
+        <View style={{marginVertical: 10}}>
+            <Text style={styles.textStyle}>Trending View</Text>
+            <Card />
+        </View>
+
     </View >
 }
 
