@@ -12,40 +12,48 @@ import Card from "./components/Card";
 function App() {
 
     return <View style={styles.container}>
-        {/* FlatCards */}
-        <View style={styles.flatCardContainer}>
-            <Text style={styles.textStyle}>FlatCards🗑️🗑️</Text>
-            <View style={styles.flatCards}>
-                <FlatCard />
-                <FlatCard cardStyle={{ backgroundColor: "green" }} />
-                <FlatCard cardStyle={{ backgroundColor: "blue" }} />
+        <ScrollView>
+
+            {/* FlatCards */}
+            <View style={styles.flatCardContainer}>
+                <Text style={styles.textStyle}>FlatCards🗑️🗑️</Text>
+                <View style={styles.flatCards}>
+                    <FlatCard />
+                    <FlatCard cardStyle={{ backgroundColor: "green" }} />
+                    <FlatCard cardStyle={{ backgroundColor: "blue" }} />
+                </View>
             </View>
-        </View>
 
-        {/* Elevated cards */}
-        <View style={styles.flatCardContainer}>
-            <Text style={styles.textStyle}>Elevated Cards 🧳🧳</Text>
-            <ScrollView horizontal >
-                <ElevatedCard text="Tap" />
-                <ElevatedCard text="me" />
-                <ElevatedCard text="to" />
-                <ElevatedCard text="scroll" />
-                <ElevatedCard text="to" />
-                <ElevatedCard text="left" />
-                <ElevatedCard text="🧳🤣🤣" />
-                <ElevatedCard text="😕😕" />
-                <ElevatedCard text="🤑🤑🤑" />
-                <ElevatedCard text="❌❌❌" />
-            </ScrollView>
-        </View>
+            {/* Elevated cards */}
+            <View style={styles.flatCardContainer}>
+                <Text style={styles.textStyle}>Elevated Cards 🧳🧳</Text>
+                <ScrollView horizontal >
+                    <ElevatedCard text="Tap" />
+                    <ElevatedCard text="me" />
+                    <ElevatedCard text="to" />
+                    <ElevatedCard text="scroll" />
+                    <ElevatedCard text="to" />
+                    <ElevatedCard text="left" />
+                    <ElevatedCard text="🧳🤣🤣" />
+                    <ElevatedCard text="😕😕" />
+                    <ElevatedCard text="🤑🤑🤑" />
+                    <ElevatedCard text="❌❌❌" />
+                </ScrollView>
+            </View>
 
 
-        {/* Card View */}
-        <View style={{marginVertical: 10}}>
-            <Text style={styles.textStyle}>Trending View</Text>
-            <Card />
-        </View>
+            {/* Card View */}
+            <View style={{ marginVertical: 10 }}>
+                <Text style={styles.textStyle}>Trending View</Text>
+                <Card />
+            </View>
+            {/* Card View */}
+            <View style={{ marginVertical: 10 }}>
+                <Text style={styles.textStyle}>Blog View</Text>
+                <BlogCard />
+            </View>
 
+        </ScrollView>
     </View >
 }
 
