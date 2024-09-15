@@ -1,7 +1,7 @@
 import React from "react";
 
 
-import { StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import FlatCard from "./components/FlatCard";
 import ElevatedCard from "./components/ElevatedCard";
 
@@ -10,13 +10,37 @@ import ElevatedCard from "./components/ElevatedCard";
 function App() {
 
     return <View style={styles.container}>
+        {/* FlatCards */}
         <View style={styles.flatCardContainer}>
-            <FlatCard />
-            <FlatCard cardStyle={{backgroundColor: "green"}}/>
-            <FlatCard cardStyle={{backgroundColor: "blue"}} />
+            <Text style={styles.textStyle}>FlatCards🗑️🗑️</Text>
+            <View style={styles.flatCards}>
+                <FlatCard />
+                <FlatCard cardStyle={{ backgroundColor: "green" }} />
+                <FlatCard cardStyle={{ backgroundColor: "blue" }} />
+            </View>
         </View>
-        <ElevatedCard />
-    </View>
+
+        {/* Elevated cards */}
+        <View style={styles.flatCardContainer}>
+            <Text style={styles.textStyle}>Elevated Cards 🧳🧳</Text>
+            <ScrollView horizontal >
+                <ElevatedCard text="Tap" />
+                <ElevatedCard text="me" />
+                <ElevatedCard text="to" />
+                <ElevatedCard text="scroll" />
+                <ElevatedCard text="to" />
+                <ElevatedCard text="left" />
+                <ElevatedCard text="🧳🤣🤣" />
+                <ElevatedCard text="😕😕" />
+                <ElevatedCard text="🤑🤑🤑" />
+                <ElevatedCard text="❌❌❌" />
+            </ScrollView>
+        </View>
+
+
+        {/* Card View */}
+        
+    </View >
 }
 
 const styles = StyleSheet.create({
@@ -24,10 +48,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#101516",
         flex: 1
     },
-    flatCardContainer: {
+    flatCards: {
         paddingVertical: 10,
         flexDirection: "row",
         justifyContent: "space-evenly"
+    },
+    flatCardContainer: {
+        margin: 2
+    },
+    textStyle: {
+        color: "white",
+        fontSize: 30,
+        fontWeight: "bold"
     }
 })
 
