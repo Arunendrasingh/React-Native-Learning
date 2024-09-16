@@ -2,7 +2,7 @@ import React from "react";
 
 
 import { SafeAreaView} from "react-native";
-import FirstApp from "./learningApps/FirstApp";
+import PasswordGenerator from "./learningApps/PasswordGenerator";
 
 
 
@@ -10,7 +10,7 @@ function App() {
 
     return(
         <SafeAreaView style={{flex: 1}}>
-            <FirstApp />
+            <PasswordGenerator />
         </SafeAreaView>
     )
 }
