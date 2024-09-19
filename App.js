@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 
-import { SafeAreaView} from "react-native";
-import PasswordGenerator from "./learningApps/PasswordGenerator";
+import { SafeAreaView} from 'react-native';
+import PasswordGenerator from './learningApps/PasswordGenerator';
 
 
 
