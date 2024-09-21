@@ -2,6 +2,7 @@ import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import React from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { Formik } from 'formik';
+import * as yup from 'yup';
 
 
 
@@ -11,6 +12,52 @@ First create a Input Box, then create a.
 */
 const PasswordGenerator = () => {
 
+  const getPasswordString = ({ upperCaseToggle, lowerCaseToggle, numberToggle, symbolToggle }) => {
+    let passwordStr = '';
+
+    let upperText = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    if (upperCaseToggle) {
+      passwordStr += upperText;
+    }
+
+    let lowerCase = 'abcdefghijklmnopqrstuvwxyz';
+    if (lowerCaseToggle) {
+      passwordStr += lowerCase;
+    }
+    let number = '0123456789';
+    console.log(numberToggle)
+    if (numberToggle) {
+      passwordStr += number;
+    }
+    let symbol = '!@#$%^&*()_+';
+    if (symbolToggle) {
+      passwordStr += symbol;
+    }
+
+    return passwordStr;
+
+  };
+
+  function createPassword(string, passwordLength) {
+    let result = '1';
+
+    for (let i = 0; i < passwordLength; i++) {
+      let characterIndex = Math.round(Math.random() * string.length);
+      result += string.charAt(characterIndex);
+    }
+
+
+    return result;
+  }
+
+  const getPassword = (values) => {
+    const passwordString = getPasswordString(values);
+    const password = createPassword(passwordString, values.passwordLength);
+    console.log("Password str: ", password);
+  };
+
+  // TODO: Generate the password
+  // !Write a method to get the password string to extract, then choose the random password till the length of password.
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Password Generator</Text>
@@ -21,17 +68,28 @@ const PasswordGenerator = () => {
         numberToggle: false,
         symbolToggle: false,
       }}
-        onSubmit={values => console.log(values)}
+        validationSchema={yup.object({
+          passwordLength: yup.number('Input must be number')
+            .integer('length must be positive integer..')
+            .max(12, 'must be less-than length 12..')
+            .min(4, 'length must be grater than 4...')
+            .required(),
+        })}
+        val
+        onSubmit={values => getPassword(values)}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (<View>
+        {({ handleChange, handleSubmit, values, setFieldValue, touched, errors, resetForm }) => (<View>
           <View style={styles.flexView}>
             <Text style={styles.text}>Password Length</Text>
-            <TextInput value={values.passwordLength} placeholder="e.g. 8" onBlur={handleBlur('passwordLength')} onChangeText={handleChange('passwordLength')} keyboardType="numeric" style={styles.lengthInput} />
+            <TextInput value={values.passwordLength} placeholder="e.g. 8" onChangeText={handleChange('passwordLength')} keyboardType="numeric" style={styles.lengthInput} />
+          </View>
+          <View style={styles.displayError}>
+            {touched.passwordLength && errors.passwordLength ? <Text style={styles.errorText}> {errors.passwordLength} </Text> : null}
           </View>
           <View style={styles.flexView}>
             <Text style={styles.text}>Include Lower Case Letters</Text>
             <View>
-              <BouncyCheckbox isChecked={values.upperCaseToggle} useBuiltInState={false} fillColor="green" onPress={(isChecked) => setFieldValue('upperCaseToggle', !isChecked)}/>
+              <BouncyCheckbox isChecked={values.upperCaseToggle} useBuiltInState={false} fillColor="green" onPress={(isChecked) => setFieldValue('upperCaseToggle', !isChecked)} />
             </View>
           </View>
           <View style={styles.flexView}>
@@ -43,7 +101,7 @@ const PasswordGenerator = () => {
           <View style={styles.flexView}>
             <Text style={styles.text}>Include Numbers</Text>
             <View>
-              <BouncyCheckbox isChecked={values.numberChecked} fillColor="gray" useBuiltInState={false} onPress={(isChecked) => setFieldValue('numberChecked', !isChecked)} />
+              <BouncyCheckbox isChecked={values.numberToggle} fillColor="gray" useBuiltInState={false} onPress={(isChecked) => setFieldValue('numberToggle', !isChecked)} />
             </View>
           </View>
           <View style={styles.flexView}>
@@ -54,10 +112,8 @@ const PasswordGenerator = () => {
           </View>
           {/* Button View */}
           <View style={styles.buttonContainer}>
-            {/* TODO: Write button code to generate the password and also button to rest the form */}
-            {/* Practice the bouncy checkbox button to show the when button is pressed or not. */}
             <Button title="Generate Password" onPress={handleSubmit} />
-            <Button title="Rest Password" color="gray" />
+            <Button title="Rest Password" color="gray" onPress={resetForm} />
           </View>
         </View>)}
       </Formik>
@@ -71,6 +127,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#363736',
+  },
+  errorText: {
+    color: 'crimson',
+    padding: 10,
+    fontSize: 15,
+    fontWeight: 'semibold',
   },
   text: {
     color: '#ffffff',
