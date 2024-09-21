@@ -1,7 +1,7 @@
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
-import Formic from 'formic';
+import { Formik } from 'formik';
 
 
 
@@ -10,50 +10,57 @@ import Formic from 'formic';
 First create a Input Box, then create a.
 */
 const PasswordGenerator = () => {
-  const [length, setLength] = useState('');
 
-  const [lowerCaseChecked, setLowerCaseChecked] = useState(true);
-  const [upperCaseChecked, setUpperCaseChecked] = useState(false);
-  const [numberChecked, setNumberChecked] = useState(false);
-  const [symbolChecked, setSymbolChecked] = useState(false);
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Password Generator</Text>
-      <View style={styles.flexView}>
-        <Text style={styles.text}>Password Length</Text>
-        <TextInput value={length} placeholder="e.g. 8" onChangeText={setLength} keyboardType="numeric" style={styles.lengthInput} />
-      </View>
-      <View style={styles.flexView}>
-        <Text style={styles.text}>Include Lower Case Letters</Text>
-        <View>
-          <BouncyCheckbox isChecked={lowerCaseChecked} useBuiltInState={false} fillColor="green" onPress={() => setLowerCaseChecked(!lowerCaseChecked)} />
-        </View>
-      </View>
-      <View style={styles.flexView}>
-        <Text style={styles.text}>Include Upper Case Letters</Text>
-        <View>
-          <BouncyCheckbox isChecked={upperCaseChecked} fillColor="red"  useBuiltInState={false} onPress={() => setUpperCaseChecked(!upperCaseChecked)} />
-        </View>
-      </View>
-      <View style={styles.flexView}>
-        <Text style={styles.text}>Include Numbers</Text>
-        <View>
-          <BouncyCheckbox isChecked={numberChecked} fillColor="gray"  useBuiltInState={false} onPress={() => setNumberChecked(!numberChecked)} />
-        </View>
-      </View>
-      <View style={styles.flexView}>
-        <Text style={styles.text}>Include Symbols</Text>
-        <View>
-          <BouncyCheckbox isChecked={symbolChecked} fillColor="orange"  useBuiltInState={false} onPress={() => setSymbolChecked(!symbolChecked)} />
-        </View>
-      </View>
-      {/* Button View */}
-      <View style={styles.buttonContainer}>
-        {/* TODO: Write button code to generate the password and also button to rest the form */}
-        {/* Practice the bouncy checkbox button to show the when button is pressed or not. */}
-        <Button title="Generate Password" />
-        <Button title="Rest Password" color="gray" />
-      </View>
+      <Formik initialValues={{
+        passwordLength: 0,
+        upperCaseToggle: false,
+        lowerCaseToggle: false,
+        numberToggle: false,
+        symbolToggle: false,
+      }}
+        onSubmit={values => console.log(values)}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (<View>
+          <View style={styles.flexView}>
+            <Text style={styles.text}>Password Length</Text>
+            <TextInput value={values.passwordLength} placeholder="e.g. 8" onBlur={handleBlur('passwordLength')} onChangeText={handleChange('passwordLength')} keyboardType="numeric" style={styles.lengthInput} />
+          </View>
+          <View style={styles.flexView}>
+            <Text style={styles.text}>Include Lower Case Letters</Text>
+            <View>
+              <BouncyCheckbox isChecked={values.upperCaseToggle} useBuiltInState={false} fillColor="green" onPress={(isChecked) => setFieldValue('upperCaseToggle', !isChecked)}/>
+            </View>
+          </View>
+          <View style={styles.flexView}>
+            <Text style={styles.text}>Include Upper Case Letters</Text>
+            <View>
+              <BouncyCheckbox isChecked={values.lowerCaseToggle} fillColor="red" useBuiltInState={false} onPress={(isChecked) => setFieldValue('lowerCaseToggle', !isChecked)} />
+            </View>
+          </View>
+          <View style={styles.flexView}>
+            <Text style={styles.text}>Include Numbers</Text>
+            <View>
+              <BouncyCheckbox isChecked={values.numberChecked} fillColor="gray" useBuiltInState={false} onPress={(isChecked) => setFieldValue('numberChecked', !isChecked)} />
+            </View>
+          </View>
+          <View style={styles.flexView}>
+            <Text style={styles.text}>Include Symbols</Text>
+            <View>
+              <BouncyCheckbox isChecked={values.symbolToggle} fillColor="orange" useBuiltInState={false} onPress={(isChecked) => setFieldValue('symbolToggle', !isChecked)} />
+            </View>
+          </View>
+          {/* Button View */}
+          <View style={styles.buttonContainer}>
+            {/* TODO: Write button code to generate the password and also button to rest the form */}
+            {/* Practice the bouncy checkbox button to show the when button is pressed or not. */}
+            <Button title="Generate Password" onPress={handleSubmit} />
+            <Button title="Rest Password" color="gray" />
+          </View>
+        </View>)}
+      </Formik>
     </View>
   );
 };
