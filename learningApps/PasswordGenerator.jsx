@@ -43,7 +43,7 @@ const PasswordGenerator = () => {
   };
 
   function createPassword(string, passwordLength) {
-    let result = '1';
+    let result = '';
 
     for (let i = 0; i < passwordLength; i++) {
       let characterIndex = Math.round(Math.random() * string.length);
@@ -81,9 +81,20 @@ const PasswordGenerator = () => {
               .max(12, 'must be less-than length 12..')
               .min(4, 'length must be grater than 4...')
               .required(),
+            upperCaseToggle: yup.boolean(),
+            lowerCaseToggle: yup.boolean(),
+            numberToggle: yup.boolean(),
+            symbolToggle: yup.boolean(),
+          }).test('at_least_one_toggle', function (value) {
+            const { upperCaseToggle, lowerCaseToggle, numberToggle, symbolToggle } = value || {};
+            if (!upperCaseToggle && !lowerCaseToggle && !numberToggle && !symbolToggle) {
+              return this.createError({ path: this.type, message: 'At least one character type must be selected.' });
+            }
+            return true;
           })}
-          val
-          onSubmit={values => getPassword(values)}
+          onSubmit={values => {
+            getPassword(values);
+          }}
         >
           {({ handleChange, handleSubmit, values, setFieldValue, touched, errors, resetForm }) => (<View>
             <View style={styles.flexView}>
@@ -117,6 +128,12 @@ const PasswordGenerator = () => {
                 <BouncyCheckbox isChecked={values.symbolToggle} fillColor="orange" useBuiltInState={false} onPress={(isChecked) => setFieldValue('symbolToggle', !isChecked)} />
               </View>
             </View>
+
+            {/* Error view to select at lease on case */}
+            <View style={styles.displayError}>
+              {errors.at_least_one_toggle &&
+                <Text style={styles.errorText}> {errors.at_least_one_toggle} </Text>}
+            </View>
             {/* Button View */}
             <View style={styles.buttonContainer}>
               <Button title="Generate Password" onPress={handleSubmit} />
@@ -129,7 +146,7 @@ const PasswordGenerator = () => {
         </Formik>
       </View>
       {password && <View style={styles.passwordContainer}>
-        <Text style={{ textAlign: "center" }}>
+        <Text style={{ textAlign: 'center' }}>
           Long Press to Copy
         </Text>
         <View style={styles.passwordView}>
@@ -163,6 +180,8 @@ const styles = StyleSheet.create({
   },
   passwordText: {
     fontSize: 18,
+    color: 'black',
+    fontWeight: 'bold',
   },
   passwordContainer: {
     margin: 10,
