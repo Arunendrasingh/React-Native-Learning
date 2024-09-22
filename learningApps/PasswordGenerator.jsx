@@ -1,8 +1,10 @@
+// import Clipboard from '@react-native-clipboard/clipboard';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 
 
@@ -11,6 +13,8 @@ import * as yup from 'yup';
 First create a Input Box, then create a.
 */
 const PasswordGenerator = () => {
+
+  const [password, setPassword] = useState(null);
 
   const getPasswordString = ({ upperCaseToggle, lowerCaseToggle, numberToggle, symbolToggle }) => {
     let passwordStr = '';
@@ -52,71 +56,90 @@ const PasswordGenerator = () => {
 
   const getPassword = (values) => {
     const passwordString = getPasswordString(values);
-    const password = createPassword(passwordString, values.passwordLength);
-    console.log("Password str: ", password);
+    const generatedPassword = createPassword(passwordString, values.passwordLength);
+    setPassword(generatedPassword);
   };
 
-  // TODO: Generate the password
-  // !Write a method to get the password string to extract, then choose the random password till the length of password.
+  function copyToClipboard() {
+    Clipboard.setString(password);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Password Generator</Text>
-      <Formik initialValues={{
-        passwordLength: 0,
-        upperCaseToggle: false,
-        lowerCaseToggle: false,
-        numberToggle: false,
-        symbolToggle: false,
-      }}
-        validationSchema={yup.object({
-          passwordLength: yup.number('Input must be number')
-            .integer('length must be positive integer..')
-            .max(12, 'must be less-than length 12..')
-            .min(4, 'length must be grater than 4...')
-            .required(),
-        })}
-        val
-        onSubmit={values => getPassword(values)}
-      >
-        {({ handleChange, handleSubmit, values, setFieldValue, touched, errors, resetForm }) => (<View>
-          <View style={styles.flexView}>
-            <Text style={styles.text}>Password Length</Text>
-            <TextInput value={values.passwordLength} placeholder="e.g. 8" onChangeText={handleChange('passwordLength')} keyboardType="numeric" style={styles.lengthInput} />
-          </View>
-          <View style={styles.displayError}>
-            {touched.passwordLength && errors.passwordLength ? <Text style={styles.errorText}> {errors.passwordLength} </Text> : null}
-          </View>
-          <View style={styles.flexView}>
-            <Text style={styles.text}>Include Lower Case Letters</Text>
-            <View>
-              <BouncyCheckbox isChecked={values.upperCaseToggle} useBuiltInState={false} fillColor="green" onPress={(isChecked) => setFieldValue('upperCaseToggle', !isChecked)} />
+      <View>
+        <Formik initialValues={{
+          passwordLength: 0,
+          upperCaseToggle: false,
+          lowerCaseToggle: false,
+          numberToggle: false,
+          symbolToggle: false,
+        }}
+          validationSchema={yup.object({
+            passwordLength: yup.number('Input must be number')
+              .integer('length must be positive integer..')
+              .max(12, 'must be less-than length 12..')
+              .min(4, 'length must be grater than 4...')
+              .required(),
+          })}
+          val
+          onSubmit={values => getPassword(values)}
+        >
+          {({ handleChange, handleSubmit, values, setFieldValue, touched, errors, resetForm }) => (<View>
+            <View style={styles.flexView}>
+              <Text style={styles.text}>Password Length</Text>
+              <TextInput value={values.passwordLength} placeholder="e.g. 8" onChangeText={handleChange('passwordLength')} keyboardType="numeric" style={styles.lengthInput} />
             </View>
-          </View>
-          <View style={styles.flexView}>
-            <Text style={styles.text}>Include Upper Case Letters</Text>
-            <View>
-              <BouncyCheckbox isChecked={values.lowerCaseToggle} fillColor="red" useBuiltInState={false} onPress={(isChecked) => setFieldValue('lowerCaseToggle', !isChecked)} />
+            <View style={styles.displayError}>
+              {touched.passwordLength && errors.passwordLength ? <Text style={styles.errorText}> {errors.passwordLength} </Text> : null}
             </View>
-          </View>
-          <View style={styles.flexView}>
-            <Text style={styles.text}>Include Numbers</Text>
-            <View>
-              <BouncyCheckbox isChecked={values.numberToggle} fillColor="gray" useBuiltInState={false} onPress={(isChecked) => setFieldValue('numberToggle', !isChecked)} />
+            <View style={styles.flexView}>
+              <Text style={styles.text}>Include Lower Case Letters</Text>
+              <View>
+                <BouncyCheckbox isChecked={values.upperCaseToggle} useBuiltInState={false} fillColor="green" onPress={(isChecked) => setFieldValue('upperCaseToggle', !isChecked)} />
+              </View>
             </View>
-          </View>
-          <View style={styles.flexView}>
-            <Text style={styles.text}>Include Symbols</Text>
-            <View>
-              <BouncyCheckbox isChecked={values.symbolToggle} fillColor="orange" useBuiltInState={false} onPress={(isChecked) => setFieldValue('symbolToggle', !isChecked)} />
+            <View style={styles.flexView}>
+              <Text style={styles.text}>Include Upper Case Letters</Text>
+              <View>
+                <BouncyCheckbox isChecked={values.lowerCaseToggle} fillColor="red" useBuiltInState={false} onPress={(isChecked) => setFieldValue('lowerCaseToggle', !isChecked)} />
+              </View>
             </View>
-          </View>
-          {/* Button View */}
-          <View style={styles.buttonContainer}>
-            <Button title="Generate Password" onPress={handleSubmit} />
-            <Button title="Rest Password" color="gray" onPress={resetForm} />
-          </View>
-        </View>)}
-      </Formik>
+            <View style={styles.flexView}>
+              <Text style={styles.text}>Include Numbers</Text>
+              <View>
+                <BouncyCheckbox isChecked={values.numberToggle} fillColor="gray" useBuiltInState={false} onPress={(isChecked) => setFieldValue('numberToggle', !isChecked)} />
+              </View>
+            </View>
+            <View style={styles.flexView}>
+              <Text style={styles.text}>Include Symbols</Text>
+              <View>
+                <BouncyCheckbox isChecked={values.symbolToggle} fillColor="orange" useBuiltInState={false} onPress={(isChecked) => setFieldValue('symbolToggle', !isChecked)} />
+              </View>
+            </View>
+            {/* Button View */}
+            <View style={styles.buttonContainer}>
+              <Button title="Generate Password" onPress={handleSubmit} />
+              <Button title="Rest Password" color="gray" onPress={() => {resetForm();
+                setPassword(null);
+              }} />
+            </View>
+          </View>)}
+        </Formik>
+      </View>
+      {password && <View style={styles.passwordContainer}>
+        <Text style={{ textAlign: "center" }}>
+          Long Press to Copy
+        </Text>
+        <View style={styles.passwordView}>
+          <Text style={styles.passwordText} selectable={true}>
+            {password}
+          </Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Copy to clipboard" color="darkcyan" onPress={copyToClipboard} />
+        </View>
+      </View>}
     </View>
   );
 };
@@ -127,6 +150,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#363736',
+  },
+  passwordView: {
+    backgroundColor: 'gainsboro',
+    width: '70%',
+    paddingVertical: 10,
+    borderRadius: 3,
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  passwordText: {
+    fontSize: 18,
+  },
+  passwordContainer: {
+    margin: 10,
+    height: 150,
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    padding: 10,
   },
   errorText: {
     color: 'crimson',
@@ -167,6 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
   },
 });
 
