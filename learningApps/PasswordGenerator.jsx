@@ -120,7 +120,8 @@ const PasswordGenerator = () => {
             {/* Button View */}
             <View style={styles.buttonContainer}>
               <Button title="Generate Password" onPress={handleSubmit} />
-              <Button title="Rest Password" color="gray" onPress={() => {resetForm();
+              <Button title="Rest Password" color="gray" onPress={() => {
+                resetForm();
                 setPassword(null);
               }} />
             </View>
