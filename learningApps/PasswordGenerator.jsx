@@ -1,4 +1,3 @@
-// import Clipboard from '@react-native-clipboard/clipboard';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import React, {useState} from 'react';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
