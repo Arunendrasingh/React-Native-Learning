@@ -1,18 +1,30 @@
-import {Button, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import {
+  Button,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPencil} from '@fortawesome/free-solid-svg-icons/faPencil';
 import {faCircle} from '@fortawesome/free-regular-svg-icons/faCircle';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons/faCircleXmark';
-import {Circle} from 'react-native-svg';
+
+/*
+Total player is 2:
+so selected state will be null, 1 and 2.
+when selected is null then display pencil, else display circle else display circle with x-mark.
+*/
 
 const getCellStyle = index => {
   const baseStyle = {
     width: '33.33%',
     height: '33.33%',
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#00BFFF',
     justifyContent: 'center',
     alignItems: 'center',
   };
@@ -28,35 +40,91 @@ const getCellStyle = index => {
 };
 
 const TicTocToe = () => {
-  const gameBoard = Array.from({length: 9}, (_, index) => index + 1);
+  const initialBoard = () =>
+    Array.from({length: 9}, (_, index) => {
+      return {selected: null, selectedByPlayer: '', position: index + 1};
+    });
+  const players = ['Tom', 'Jerry'];
+  // We assume true means player 1 and true means player 2
+
+  const [board, setBoard] = useState(() => initialBoard());
+
+  const [playerTurn, setPlayerTurn] = useState(players[0]);
+
+  const setSelectedPlayOnBoard = (selected, currentPlayer, selectedIndex) => {
+    // New board
+    let newBoard = board.map((item, index) => {
+      if (
+        selected === null &&
+        currentPlayer === players[0] &&
+        selectedIndex === index
+      ) {
+        item.selected = 0;
+        item.selectedByPlayer = currentPlayer;
+      } else if (selected === null && selectedIndex === index) {
+        item.selected = 1;
+        item.selectedByPlayer = currentPlayer;
+      }
+      return item;
+    });
+    console.log(newBoard);
+    if (currentPlayer === players[0]) {
+      setPlayerTurn(players[1]);
+    } else {
+      setPlayerTurn(players[0]);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View>
         <Text>This is a Header Text</Text>
       </View>
       <View style={styles.gameContainer}>
-        <Text>Players turn</Text>
+        <Text style={styles.text}>Players turn</Text>
         <View style={styles.boardContainer}>
-          {gameBoard.map((value, index) => (
-            <BoardIcon key={value} index={index} />
+          {board.map(({selected, position}, index) => (
+            <BoardIcon
+              key={position}
+              index={index}
+              selected={selected}
+              setSelected={setSelectedPlayOnBoard}
+              playerTurn={playerTurn}
+            />
           ))}
         </View>
-        <Button title="Reset Game" />
+        <TouchableOpacity style={styles.resetButton}>
+          <Text style={styles.buttonText}>Reset the Game</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-function BoardIcon({index}) {
+function BoardIcon({index, selected, setSelected, playerTurn}) {
+  const iconToggle = () => {
+    console.log('Icons is selected at index: ', index, playerTurn);
+    setSelected(selected, playerTurn, index);
+  };
   return (
     <View style={getCellStyle(index)}>
-      <FontAwesomeIcon icon={faPencil} size={35} style={styleIcon.pencil} />
-      <FontAwesomeIcon icon={faCircle} size={40} style={styleIcon.circle} />
-      <FontAwesomeIcon
-        icon={faCircleXmark}
-        size={40}
-        style={styleIcon.circleXMark}
-      />
+      <Pressable onPress={iconToggle}>
+        {selected === null ? (
+          <FontAwesomeIcon icon={faPencil} size={35} style={styleIcon.pencil} />
+        ) : selected === 0 ? (
+          <FontAwesomeIcon
+            icon={faCircle}
+            size={40}
+            style={styleIcon.circleXMark}
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            size={40}
+            style={styleIcon.circle}
+          />
+        )}
+      </Pressable>
     </View>
   );
 }
@@ -68,9 +136,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#183153',
   },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
   gameContainer: {
-    borderWidth: 5,
+    height: '100%',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   boardContainer: {
     flexDirection: 'row',
@@ -83,10 +157,22 @@ const styles = StyleSheet.create({
   boardItem: {
     width: '33.33%',
     height: '33.33%',
-    borderWidth: 1,
     borderColor: 'gray',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  resetButton: {
+    width: 200,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FF6F61',
+    borderRadius: 10,
+  },
+  text: {
+    color: '#ffffff',
+    fontSize: 30,
+    fontWeight: 'bold',
   },
 });
 
