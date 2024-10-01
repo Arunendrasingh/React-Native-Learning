@@ -32,12 +32,26 @@ const getCellStyle = index => {
   return {...baseStyle, ...borderStyle};
 };
 
+const GameStartScreen = () => {
+  return (
+    <View style={styles.container}>
+      <Text>This is a Game Start Screen</Text>
+    </View>
+  );
+};
+const TicTocToe = () => {
+  return (
+    <View style={styles.container}>
+      <Text>This is a main Game Board</Text>
+    </View>
+  );
+};
 /**
  * Tic Tac Toe game component.
  *
  * @return {JSX.Element} Tic Tac Toe game component.
  */
-const TicTocToe = () => {
+const GameBoard = () => {
   /**
    * Creates an initial game board with 9 empty positions.
    *
@@ -190,30 +204,37 @@ function BoardIcon({index, selected, setSelected, playerTurn}) {
     console.log('Icons is selected at index: ', index, playerTurn);
     setSelected(selected, playerTurn, index);
   };
+
+  const getIcon = () => {
+    if (selected === null) {
+      return (
+        <FontAwesomeIcon icon={faPencil} size={35} style={styleIcon.pencil} />
+      );
+    } else if (selected === 0) {
+      return (
+        <FontAwesomeIcon
+          icon={faCircle}
+          size={40}
+          style={styleIcon.circleXMark}
+        />
+      );
+    } else {
+      return (
+        <FontAwesomeIcon
+          icon={faCircleXmark}
+          size={40}
+          style={styleIcon.circle}
+        />
+      );
+    }
+  };
   return (
     <View style={getCellStyle(index)}>
-      <Pressable onPress={iconToggle}>
-        {selected === null ? (
-          <FontAwesomeIcon icon={faPencil} size={35} style={styleIcon.pencil} />
-        ) : selected === 0 ? (
-          <FontAwesomeIcon
-            icon={faCircle}
-            size={40}
-            style={styleIcon.circleXMark}
-          />
-        ) : (
-          <FontAwesomeIcon
-            icon={faCircleXmark}
-            size={40}
-            style={styleIcon.circle}
-          />
-        )}
-      </Pressable>
+      <Pressable onPress={iconToggle}>{getIcon()}</Pressable>
     </View>
   );
 }
-
-export default TicTocToe;
+export default GameBoard;
 
 const styles = StyleSheet.create({
   container: {

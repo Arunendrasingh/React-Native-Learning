@@ -1,12 +1,12 @@
 import React from 'react';
 
 import {SafeAreaView, StyleSheet} from 'react-native';
-import TicTocToe from './learningApps/TicTocToe';
+import GameBoard from './learningApps/TicTocToe';
 
 function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <TicTocToe />
+      <GameBoard />
     </SafeAreaView>
   );
 }
