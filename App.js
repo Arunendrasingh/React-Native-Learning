@@ -1,20 +1,13 @@
 import React from 'react';
 
-import {SafeAreaView, StyleSheet} from 'react-native';
-import GameBoard from './learningApps/TicTocToe';
+import TicTocToe, {GameBoard} from './learningApps/TicTocToe';
+import {NavigationContainer} from '@react-navigation/native';
 
 function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <GameBoard />
-    </SafeAreaView>
+    <NavigationContainer>
+      <TicTocToe />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
 export default App;
