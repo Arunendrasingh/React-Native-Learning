@@ -32,7 +32,6 @@ const getCellStyle = index => {
   return {...baseStyle, ...borderStyle};
 };
 
-/*************  ✨ Codeium Command 🌟  *************/
 /**
  * Tic Tac Toe game component.
  *
@@ -53,7 +52,6 @@ const TicTocToe = () => {
    * The two players in the game.
    */
   const players = ['Tom', 'Jerry'];
-  // We assume true means player 1 and true means player 2
 
   /**
    * The current game board.
@@ -62,7 +60,6 @@ const TicTocToe = () => {
   /**
    * The player who is currently playing.
    */
-
   const [playerTurn, setPlayerTurn] = useState(players[0]);
 
   /**
@@ -187,7 +184,6 @@ const TicTocToe = () => {
     </View>
   );
 };
-/******  91840191-2b52-46a7-b53a-827aa40a3679  *******/
 
 function BoardIcon({index, selected, setSelected, playerTurn}) {
   const iconToggle = () => {
