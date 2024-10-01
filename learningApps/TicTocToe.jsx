@@ -1,5 +1,4 @@
 import {
-  Button,
   Pressable,
   StyleSheet,
   Text,
@@ -12,12 +11,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPencil} from '@fortawesome/free-solid-svg-icons/faPencil';
 import {faCircle} from '@fortawesome/free-regular-svg-icons/faCircle';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons/faCircleXmark';
-
-/*
-Total player is 2:
-so selected state will be null, 1 and 2.
-when selected is null then display pencil, else display circle else display circle with x-mark.
-*/
 
 const getCellStyle = index => {
   const baseStyle = {
@@ -40,6 +33,11 @@ const getCellStyle = index => {
 };
 
 const TicTocToe = () => {
+  /**
+   * Creates an initial game board with 9 empty positions.
+   *
+   * @return {Array} An array of objects representing the game board positions.
+   */
   const initialBoard = () =>
     Array.from({length: 9}, (_, index) => {
       return {selected: null, selectedByPlayer: '', position: index + 1};
@@ -51,23 +49,75 @@ const TicTocToe = () => {
 
   const [playerTurn, setPlayerTurn] = useState(players[0]);
 
+  const [winner, setWinner] = useState(null);
+
+  const resetGame = () => {
+    setBoard(initialBoard());
+    setWinner(null);
+    setPlayerTurn(players[0]);
+  };
+
+  function getWinner(currentBoard) {
+    let winnerName;
+
+    const winningCombinations = [
+      [0, 1, 2], // Row 1
+      [3, 4, 5], // Row 2
+      [6, 7, 8], // Row 3
+      [0, 3, 6], // Column 1
+      [1, 4, 7], // Column 2
+      [2, 5, 8], // Column 3
+      [0, 4, 8], // Diagonal
+      [2, 4, 6], // Diagonal
+    ];
+
+    for (const [a, b, c] of winningCombinations) {
+      const player = currentBoard[a].selectedByPlayer;
+      // Check that the selectedByPlayer is not empty and matches in all three positions
+      if (
+        player &&
+        player === currentBoard[b].selectedByPlayer &&
+        player === currentBoard[c].selectedByPlayer
+      ) {
+        winnerName = player;
+        break;
+      }
+    }
+
+    return winnerName;
+  }
+
   const setSelectedPlayOnBoard = (selected, currentPlayer, selectedIndex) => {
     // New board
+
+    if (selected !== null) {
+      return;
+    }
+
+    if (winner !== null) {
+      return;
+    }
+
     let newBoard = board.map((item, index) => {
-      if (
-        selected === null &&
-        currentPlayer === players[0] &&
-        selectedIndex === index
-      ) {
-        item.selected = 0;
-        item.selectedByPlayer = currentPlayer;
-      } else if (selected === null && selectedIndex === index) {
-        item.selected = 1;
-        item.selectedByPlayer = currentPlayer;
+      if (currentPlayer === players[0] && selectedIndex === index) {
+        return {...item, selected: 0, selectedByPlayer: currentPlayer};
+      } else if (selectedIndex === index) {
+        return {...item, selected: 1, selectedByPlayer: currentPlayer};
       }
       return item;
     });
-    console.log(newBoard);
+
+    setBoard(newBoard);
+    // Check the
+
+    let currentWinner = getWinner(newBoard);
+    console.log('Current Winner of the game', currentWinner);
+
+    if (currentWinner) {
+      setWinner(currentWinner);
+      return;
+    }
+
     if (currentPlayer === players[0]) {
       setPlayerTurn(players[1]);
     } else {
@@ -81,7 +131,9 @@ const TicTocToe = () => {
         <Text>This is a Header Text</Text>
       </View>
       <View style={styles.gameContainer}>
-        <Text style={styles.text}>Players turn</Text>
+        <Text style={styles.text}>
+          {winner === null ? `${playerTurn}'s turn` : `${winner} win the game.`}
+        </Text>
         <View style={styles.boardContainer}>
           {board.map(({selected, position}, index) => (
             <BoardIcon
@@ -93,7 +145,7 @@ const TicTocToe = () => {
             />
           ))}
         </View>
-        <TouchableOpacity style={styles.resetButton}>
+        <TouchableOpacity style={styles.resetButton} onPress={resetGame}>
           <Text style={styles.buttonText}>Reset the Game</Text>
         </TouchableOpacity>
       </View>
