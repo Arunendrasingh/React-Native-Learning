@@ -32,6 +32,12 @@ const getCellStyle = index => {
   return {...baseStyle, ...borderStyle};
 };
 
+/*************  ✨ Codeium Command 🌟  *************/
+/**
+ * Tic Tac Toe game component.
+ *
+ * @return {JSX.Element} Tic Tac Toe game component.
+ */
 const TicTocToe = () => {
   /**
    * Creates an initial game board with 9 empty positions.
@@ -42,21 +48,43 @@ const TicTocToe = () => {
     Array.from({length: 9}, (_, index) => {
       return {selected: null, selectedByPlayer: '', position: index + 1};
     });
+
+  /**
+   * The two players in the game.
+   */
   const players = ['Tom', 'Jerry'];
   // We assume true means player 1 and true means player 2
 
+  /**
+   * The current game board.
+   */
   const [board, setBoard] = useState(() => initialBoard());
+  /**
+   * The player who is currently playing.
+   */
 
   const [playerTurn, setPlayerTurn] = useState(players[0]);
 
+  /**
+   * The winner of the game.
+   */
   const [winner, setWinner] = useState(null);
 
+  /**
+   * Resets the game to the initial state.
+   */
   const resetGame = () => {
     setBoard(initialBoard());
     setWinner(null);
     setPlayerTurn(players[0]);
   };
 
+  /**
+   * Finds the winner of the game based on the current board.
+   *
+   * @param {Array} currentBoard The current game board.
+   * @return {String} The winner of the game or null if there is no winner.
+   */
   function getWinner(currentBoard) {
     let winnerName;
 
@@ -87,14 +115,21 @@ const TicTocToe = () => {
     return winnerName;
   }
 
+  /**
+   * Sets the selected play on the game board.
+   *
+   * @param {Number} selected The selected play (0 for player 1, 1 for player 2, null for empty).
+   * @param {String} currentPlayer The current player.
+   * @param {Number} selectedIndex The index of the selected play on the board.
+   */
   const setSelectedPlayOnBoard = (selected, currentPlayer, selectedIndex) => {
     // New board
 
-    if (selected !== null) {
+    if (selected != null) {
       return;
     }
 
-    if (winner !== null) {
+    if (winner != null) {
       return;
     }
 
@@ -152,6 +187,7 @@ const TicTocToe = () => {
     </View>
   );
 };
+/******  91840191-2b52-46a7-b53a-827aa40a3679  *******/
 
 function BoardIcon({index, selected, setSelected, playerTurn}) {
   const iconToggle = () => {
