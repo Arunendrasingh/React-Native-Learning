@@ -3,6 +3,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import GameBoard from './GameBoard';
 import GameHomeScreen from './GameHomeScreen';
+import GameResultScreen from './GameResultScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +32,7 @@ const TicTocToe = () => {
           },
         }}
       />
+      <Stack.Screen name="GameResultScreen" component={GameResultScreen} />
     </Stack.Navigator>
   );
 };

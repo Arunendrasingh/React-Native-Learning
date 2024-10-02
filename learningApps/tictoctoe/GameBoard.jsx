@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import BoardIcon from '../../components/BoardIcon';
+import PropTypes from 'prop-types';
 
-const GameBoard = ({route}) => {
+const GameBoard = ({route, navigation}) => {
   const initialBoard = () =>
     Array.from({length: 9}, (_, index) => {
       return {selected: null, selectedByPlayer: '', position: index + 1};
@@ -79,6 +80,15 @@ const GameBoard = ({route}) => {
 
     if (currentWinner) {
       setWinner(currentWinner);
+
+      //   Navigate the user to win screen after 500ms
+
+      setTimeout(() => {
+        navigation.replace('GameResultScreen', {
+          winner: currentWinner,
+          players: players,
+        });
+      }, 500);
       return;
     }
 
@@ -160,3 +170,14 @@ const styles = StyleSheet.create({
 });
 
 export default GameBoard;
+
+GameBoard.propTypes = {
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      players: PropTypes.arrayOf(PropTypes.string).isRequired,
+    }).isRequired,
+  }).isRequired,
+  navigation: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+  }).isRequired,
+};

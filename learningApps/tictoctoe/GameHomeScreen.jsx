@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 const GameHomeScreen = ({navigation}) => {
   const [player1, setPlayer1] = useState('');
@@ -183,5 +184,9 @@ const gameHomeStyles = StyleSheet.create({
     opacity: 0.6, // Lower opacity to indicate disabled state
   },
 });
+
+GameHomeScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+};
 
 export default GameHomeScreen;

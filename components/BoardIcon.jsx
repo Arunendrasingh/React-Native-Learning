@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faPencil} from '@fortawesome/free-solid-svg-icons/faPencil';
 import {faCircle} from '@fortawesome/free-regular-svg-icons/faCircle';
 import {faCircleXmark} from '@fortawesome/free-regular-svg-icons/faCircleXmark';
+import PropTypes from 'prop-types';
 
 export default function BoardIcon({index, selected, setSelected, playerTurn}) {
   const iconToggle = () => {
@@ -70,3 +71,10 @@ const styleIcon = StyleSheet.create({
   },
   circleXMark: {color: '#B197FC'},
 });
+
+BoardIcon.propTypes = {
+  index: PropTypes.number.isRequired,
+  selected: PropTypes.number,
+  setSelected: PropTypes.func.isRequired,
+  playerTurn: PropTypes.number,
+};
