@@ -57,27 +57,25 @@ const GameBoard = ({route, navigation}) => {
   }
 
   const setSelectedPlayOnBoard = (selected, currentPlayer, selectedIndex) => {
-    if (selected != null) {
+    if (selected !== null || winner !== null) {
       return;
     }
 
-    if (winner != null) {
-      return;
-    }
-
-    let newBoard = board.map((item, index) => {
-      if (currentPlayer === players[0] && selectedIndex === index) {
-        return {...item, selected: 0, selectedByPlayer: currentPlayer};
-      } else if (selectedIndex === index) {
-        return {...item, selected: 1, selectedByPlayer: currentPlayer};
-      }
-      return item;
-    });
+    const newBoard = board.map((item, index) =>
+      index === selectedIndex
+        ? {
+            ...item,
+            selected: currentPlayer === players[0] ? 0 : 1,
+            selectedByPlayer: currentPlayer,
+          }
+        : item
+    );
 
     setBoard(newBoard);
 
-    // If all the positions are filled then it is a draw, mark the game as draw
-    if (newBoard.filter(item => item.selected === null).length === 0) {
+    const allFilled = newBoard.every(item => item.selected !== null);
+
+    if (allFilled) {
       setWinner('Draw');
       setGameRecords(item => [
         ...item,
@@ -93,9 +91,7 @@ const GameBoard = ({route, navigation}) => {
       return;
     }
 
-    let currentWinner = getWinner(newBoard);
-    console.log('Current Winner of the game', currentWinner);
-
+    const currentWinner = getWinner(newBoard);
     if (currentWinner) {
       setWinner(currentWinner);
 
@@ -116,11 +112,7 @@ const GameBoard = ({route, navigation}) => {
       return;
     }
 
-    if (currentPlayer === players[0]) {
-      setPlayerTurn(players[1]);
-    } else {
-      setPlayerTurn(players[0]);
-    }
+    setPlayerTurn(players[0] === currentPlayer ? players[1] : players[0]);
   };
 
   return (
