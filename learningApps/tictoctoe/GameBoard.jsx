@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import BoardIcon from '../../components/BoardIcon';
 import PropTypes from 'prop-types';
+import {GameRecordContext} from '../context/GameRecordContext';
 
 const GameBoard = ({route, navigation}) => {
   const initialBoard = () =>
@@ -10,6 +11,7 @@ const GameBoard = ({route, navigation}) => {
       return {selected: null, selectedByPlayer: '', position: index + 1};
     });
 
+  const {setGameRecords} = useContext(GameRecordContext);
   const {players} = route.params;
   const [board, setBoard] = useState(() => initialBoard());
   const [playerTurn, setPlayerTurn] = useState(players[0]);
@@ -19,6 +21,8 @@ const GameBoard = ({route, navigation}) => {
   const resetGame = () => {
     setBoard(initialBoard());
     setWinner(null);
+
+    // I can update the state of the winner player with loser. I am not using any storage facility right now.
     setPlayerTurn(players[0]);
   };
 
@@ -53,8 +57,6 @@ const GameBoard = ({route, navigation}) => {
   }
 
   const setSelectedPlayOnBoard = (selected, currentPlayer, selectedIndex) => {
-    // New board
-
     if (selected != null) {
       return;
     }
@@ -73,7 +75,23 @@ const GameBoard = ({route, navigation}) => {
     });
 
     setBoard(newBoard);
-    // Check the
+
+    // If all the positions are filled then it is a draw, mark the game as draw
+    if (newBoard.filter(item => item.selected === null).length === 0) {
+      setWinner('Draw');
+      setGameRecords(item => [
+        ...item,
+        {player: players[0], status: 'Draw'},
+        {player: players[1], status: 'Draw'},
+      ]);
+      setTimeout(() => {
+        navigation.replace('GameResultScreen', {
+          winner: 'Draw',
+          players: players,
+        });
+      }, 1000);
+      return;
+    }
 
     let currentWinner = getWinner(newBoard);
     console.log('Current Winner of the game', currentWinner);
@@ -81,14 +99,20 @@ const GameBoard = ({route, navigation}) => {
     if (currentWinner) {
       setWinner(currentWinner);
 
-      //   Navigate the user to win screen after 500ms
-
+      setGameRecords(item => [
+        ...item,
+        {player: currentWinner, status: 'Win'},
+        {
+          player: currentWinner === players[0] ? players[1] : players[0],
+          status: 'Lose',
+        },
+      ]);
       setTimeout(() => {
         navigation.replace('GameResultScreen', {
           winner: currentWinner,
           players: players,
         });
-      }, 500);
+      }, 1000);
       return;
     }
 

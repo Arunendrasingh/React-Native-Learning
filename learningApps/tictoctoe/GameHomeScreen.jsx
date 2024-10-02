@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   View,
   Text,
@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
+import {GameRecordContext} from '../context/GameRecordContext';
 
 const GameHomeScreen = ({navigation}) => {
   const [player1, setPlayer1] = useState('');
   const [player2, setPlayer2] = useState('');
 
-  const [gameRecords, setGameRecords] = useState([]);
+  const {gameRecords} = useContext(GameRecordContext);
 
   // Function to handle the start of the game
   const startGame = () => {
