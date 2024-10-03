@@ -1,0 +1,45 @@
+[
+    {
+      "title": "Calculator",
+      "description": "A simple calculator app to perform basic arithmetic operations.",
+      "routeName": "CalculatorScreen",
+      "image": "calculator.jpg",
+      "date": "2023-01-15"
+    },
+    {
+      "title": "WeatherApp",
+      "description": "An app to display the current weather and forecast for a given location using an API.",
+      "routeName": "WeatherAppScreen",
+      "image": "weather.jpg",
+      "date": "2023-03-10"
+    },
+    {
+      "title": "TicTacToe",
+      "description": "A classic Tic-Tac-Toe game where two players compete.",
+      "routeName": "TicTacToeScreen",
+      "image": "tictoctoe.jpg",
+      "date": "2023-05-22"
+    },
+    {
+      "title": "TaskManager",
+      "description": "A to-do app to create, update, and delete tasks, with local storage.",
+      "routeName": "TaskManagerScreen",
+      "image": "taskmanager.png",
+      "date": "2023-07-05"
+    },
+    {
+      "title": "NotesApp",
+      "description": "A notes-taking app where users can add, edit, and delete notes.",
+      "routeName": "NotesAppScreen",
+      "image": "notesapp.png",
+      "date": "2023-08-12"
+    },
+    {
+      "title": "QRScanner",
+      "description": "A QR code scanning app to scan and decode QR codes using the device camera.",
+      "routeName": "QRScannerScreen",
+      "image": "qrscanner.png",
+      "date": "2023-09-28"
+    }
+  ]
+  
