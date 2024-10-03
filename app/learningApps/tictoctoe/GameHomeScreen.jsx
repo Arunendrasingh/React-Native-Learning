@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {GameRecordContext} from '../context/GameRecordContext';
+import {GameRecordContext} from '../../context/GameRecordContext';
 
 const GameHomeScreen = ({navigation}) => {
   const [player1, setPlayer1] = useState('');

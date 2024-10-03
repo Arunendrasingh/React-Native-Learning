@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import GameBoard from './GameBoard';
 import GameHomeScreen from './GameHomeScreen';
 import GameResultScreen from './GameResultScreen';
-import {GameRecordProvider} from '../context/GameRecordContext';
+import {GameRecordProvider} from '../../context/GameRecordContext';
 
 const Stack = createNativeStackNavigator();
 

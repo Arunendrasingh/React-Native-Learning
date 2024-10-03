@@ -3,7 +3,7 @@ import React, {useContext, useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import BoardIcon from '../../components/BoardIcon';
 import PropTypes from 'prop-types';
-import {GameRecordContext} from '../context/GameRecordContext';
+import {GameRecordContext} from '../../context/GameRecordContext';
 
 const GameBoard = ({route, navigation}) => {
   const initialBoard = () =>
