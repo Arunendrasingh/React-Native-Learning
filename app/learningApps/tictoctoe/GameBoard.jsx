@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import BoardIcon from '../../components/BoardIcon';
@@ -10,6 +10,30 @@ const GameBoard = ({route, navigation}) => {
     Array.from({length: 9}, (_, index) => {
       return {selected: null, selectedByPlayer: '', position: index + 1};
     });
+
+  // Traverse the tab Navigator the hide it.
+  console.log(
+    "Current Navigation's Parent' Parent: ",
+    navigation.getParent('TopHomeNav'),
+  );
+
+  useEffect(() => {
+    const tabNavigator = navigation.getParent('TopHomeNav');
+
+    if (tabNavigator) {
+      tabNavigator.setOptions({
+        tabBarStyle: {display: 'none'},
+      });
+    }
+
+    return () => {
+      if (tabNavigator) {
+        tabNavigator.setOptions({
+          tabBarStyle: {display: 'flex'},
+        });
+      }
+    };
+  }, [navigation]);
 
   const {setGameRecords} = useContext(GameRecordContext);
   const {players} = route.params;
@@ -68,7 +92,7 @@ const GameBoard = ({route, navigation}) => {
             selected: currentPlayer === players[0] ? 0 : 1,
             selectedByPlayer: currentPlayer,
           }
-        : item
+        : item,
     );
 
     setBoard(newBoard);
@@ -187,13 +211,13 @@ const styles = StyleSheet.create({
 
 export default GameBoard;
 
-GameBoard.propTypes = {
-  route: PropTypes.shape({
-    params: PropTypes.shape({
-      players: PropTypes.arrayOf(PropTypes.string).isRequired,
-    }).isRequired,
-  }).isRequired,
-  navigation: PropTypes.shape({
-    replace: PropTypes.func.isRequired,
-  }).isRequired,
-};
+// GameBoard.propTypes = {
+//   route: PropTypes.shape({
+//     params: PropTypes.shape({
+//       players: PropTypes.arrayOf(PropTypes.string).isRequired,
+//     }).isRequired,
+//   }).isRequired,
+//   navigation: PropTypes.shape({
+//     replace: PropTypes.func.isRequired,
+//   }).isRequired,
+// };

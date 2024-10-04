@@ -1,4 +1,4 @@
-import React, {useState, useEffect, createElement} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -22,6 +22,23 @@ const imageMapping = {
 };
 
 const StackHome = createNativeStackNavigator();
+
+const HomeScreenStackNavigator = () => {
+  return (
+    <StackHome.Navigator>
+      <StackHome.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <StackHome.Screen
+        name="TicTacToeScreen"
+        component={TicTocToe}
+        options={{headerShown: false}}
+      />
+    </StackHome.Navigator>
+  );
+};
 
 const HomeScreen = () => {
   const [projects, setProjects] = useState([]);
@@ -139,4 +156,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default HomeScreenStackNavigator;
